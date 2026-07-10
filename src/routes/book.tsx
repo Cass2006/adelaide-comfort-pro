@@ -6,7 +6,7 @@ import {
   MapPin, CalendarDays, User, Phone, MessageSquare, Mail, Camera,
   CheckCircle2, Check, ChevronLeft, ChevronRight, ChevronDown, Send,
   Shield, Timer, Award, Lock, DollarSign, Clock, X, Key, Loader2,
-  Star, CalendarPlus, ScrewdriverWrench,
+  Star, CalendarPlus, 
 } from "lucide-react";
 
 export const Route = createFileRoute("/book")({
@@ -32,7 +32,7 @@ const SERVICES = [
   { value: "heat-pump", label: "Heat Pump", Icon: RotateCw },
   { value: "refrigeration", label: "Refrigeration", Icon: Snowflake },
   { value: "electrical", label: "Electrical", Icon: Wrench },
-  { value: "maintenance", label: "Maintenance", Icon: ScrewdriverWrench },
+  { value: "maintenance", label: "Maintenance", Icon: Wrench },
   { value: "new-installation", label: "New Installation", Icon: Home },
   { value: "inspection", label: "Inspection / Diagnosis", Icon: ClipboardList },
 ] as const;
@@ -290,7 +290,7 @@ function StepNav({ step, isLast, canAdvance, submitting, onBack, onNext, onSubmi
 function Step1({ state, set }: { state: FormState; set: <K extends keyof FormState>(k: K, v: FormState[K]) => void }) {
   return (
     <>
-      <StepHeader Icon={ScrewdriverWrench} title="What service do you need?" desc="Select the type of HVAC service required." />
+      <StepHeader Icon={Wrench} title="What service do you need?" desc="Select the type of HVAC service required." />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {SERVICES.map(({ value, label, Icon }) => {
           const active = state.service === value;
@@ -702,7 +702,7 @@ function Success({ state, onReset }: { state: FormState; onReset: () => void }) 
       <p className="mt-2 text-white/60">We've received your appointment request. You'll get a confirmation shortly.</p>
 
       <div className="mx-auto mt-8 max-w-md space-y-2 text-left">
-        <SuccessRow Icon={ScrewdriverWrench} label="Service"     value={service?.label ?? "—"} />
+        <SuccessRow Icon={Wrench} label="Service"     value={service?.label ?? "—"} />
         <SuccessRow Icon={Calendar}          label="Date"        value={dateStr} />
         <SuccessRow Icon={Clock}             label="Window"      value={state.slot || "—"} />
         <SuccessRow Icon={Phone}             label="We'll call"  value={state.phone || "you"} suffix="to confirm" />
