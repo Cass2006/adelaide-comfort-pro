@@ -107,7 +107,7 @@ function Nav() {
             <Phone className="h-4 w-4 text-primary" />
             {PHONE}
           </a>
-          <a href="#contact"
+          <a href="/book"
             className="rounded-full gradient-cta px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-white shadow-cta transition-transform hover:scale-105 animate-pulse-glow">
             Book Now
           </a>
@@ -140,7 +140,7 @@ function Nav() {
             <a href={TEL} className="mt-8 flex items-center gap-2 font-heading font-bold text-secondary">
               <Phone className="h-5 w-5 text-primary" /> {PHONE}
             </a>
-            <a href="#contact" onClick={() => setOpen(false)}
+            <a href="/book" onClick={() => setOpen(false)}
               className="mt-6 block rounded-full gradient-cta px-6 py-3 text-center text-sm font-bold uppercase tracking-wider text-white">
               Book Now
             </a>
@@ -174,7 +174,7 @@ function Hero() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href="#contact"
+            <a href="/book"
               className="group inline-flex items-center gap-2 rounded-full gradient-cta px-8 py-4 font-heading text-base font-bold uppercase tracking-wider text-white shadow-cta transition-transform hover:scale-[1.03] animate-pulse-glow">
               Get a Free Quote <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </a>
@@ -526,7 +526,7 @@ function CTABanner() {
           Adelaide HVAC Services — your trusted local experts. Get a free, no-obligation quote today.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <a href="#contact"
+          <a href="/book"
             className="inline-flex items-center gap-2 rounded-full bg-[#FF6B35] px-8 py-4 font-heading text-base font-bold uppercase tracking-wider text-white shadow-cta transition-transform hover:scale-105 animate-pulse-glow">
             Get a Free Quote <ArrowRight className="h-5 w-5" />
           </a>
@@ -669,7 +669,7 @@ function Footer() {
           <p className="mt-4 font-heading text-sm font-bold text-primary">"Your Comfort. Our Expertise."</p>
         </div>
         <FooterCol title="Services" items={[["Air Conditioning", "#services"], ["Refrigeration", "#services"], ["Electrical", "#services"]]} />
-        <FooterCol title="Quick Links" items={[["Home", "#home"], ["Why Us", "#why"], ["Contact", "#contact"], ["Book Online", "#contact"]]} />
+        <FooterCol title="Quick Links" items={[["Home", "#home"], ["Why Us", "#why"], ["Contact", "#contact"], ["Book Online", "/book"]]} />
         <div>
           <h4 className="font-heading text-sm font-bold uppercase tracking-wider text-white">Contact</h4>
           <ul className="mt-4 space-y-2 text-sm">
