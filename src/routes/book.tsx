@@ -132,7 +132,7 @@ function BgCanvas() {
 function SiteHeader() {
   return (
     <header className="relative z-10 border-b border-white/5 bg-black/20 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2.5 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/15 text-primary">
             <Snowflake className="h-4 w-4" strokeWidth={2.5} />
@@ -154,27 +154,23 @@ function SiteHeader() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-4xl px-5 py-6 text-center sm:py-8">
+      <div className="mx-auto max-w-4xl px-5 py-4 text-center sm:py-5">
         <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
           <Rocket className="h-3 w-3" /> Book in under 2 minutes
         </div>
-        <h1 className="mt-3 font-display text-2xl leading-[1.05] tracking-tight text-white sm:text-3xl lg:text-4xl">
+        <h1 className="mt-2 font-display text-xl leading-[1.05] tracking-tight text-white sm:text-2xl lg:text-3xl">
           Schedule Your{" "}
           <span className="bg-gradient-to-r from-primary via-cyan-300 to-primary bg-clip-text text-transparent">HVAC Service</span>
         </h1>
-        <p className="mx-auto mt-2 max-w-xl text-sm text-white/70">
+        <p className="mx-auto mt-1.5 max-w-xl text-xs text-white/70 sm:text-sm">
           Expert technicians, on-time arrivals, transparent pricing. Book your appointment today.
         </p>
-        <div className="mx-auto mt-4 flex max-w-2xl flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        <div className="mx-auto mt-3 flex max-w-2xl flex-wrap items-center justify-center gap-x-6 gap-y-1">
           <Stat value={<>5.0 <Star className="inline h-3.5 w-3.5 fill-current text-primary" /></>} label="Rated" />
           <Divider />
           <Stat value="500+" label="Jobs Done" />
           <Divider />
           <Stat value="15 min" label="Avg Response" />
-        </div>
-        <div className="mt-3 inline-flex flex-col items-center gap-0.5 text-[10px] uppercase tracking-widest text-white/50">
-          Begin Booking
-          <ChevronDown className="h-3.5 w-3.5 animate-bounce" />
         </div>
       </div>
     </section>
@@ -277,7 +273,7 @@ function Wizard() {
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-xl">
       <ProgressBar step={step} />
-      <div className="p-4 sm:p-5">
+      <div className="p-3.5 sm:p-4">
         {step === 0 && <Step1 state={state} set={set} />}
         {step === 1 && <Step2 state={state} set={set} />}
         {step === 2 && <Step3 state={state} set={set} />}
@@ -309,15 +305,15 @@ function Wizard() {
 function ProgressBar({ step }: { step: number }) {
   const pct = ((step + 1) / STEPS.length) * 100;
   return (
-    <div className="border-b border-white/5 bg-black/20 px-5 py-3 sm:px-7">
-      <div className="mb-2 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
+    <div className="border-b border-white/5 bg-black/20 px-5 py-2.5 sm:px-7">
+      <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
         <span>Step {step + 1} of {STEPS.length}</span>
         <span className="text-primary">{STEPS[step]}</span>
       </div>
       <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
         <div className="h-full rounded-full bg-gradient-to-r from-primary to-cyan-300 transition-all duration-500" style={{ width: `${pct}%` }} />
       </div>
-      <div className="mt-2 hidden justify-between text-[10px] font-semibold uppercase tracking-wider text-white/40 sm:flex">
+      <div className="mt-1.5 hidden justify-between text-[10px] font-semibold uppercase tracking-wider text-white/40 sm:flex">
         {STEPS.map((s, i) => (
           <span key={s} className={i <= step ? "text-primary" : ""}>{s}</span>
         ))}
@@ -328,12 +324,12 @@ function ProgressBar({ step }: { step: number }) {
 
 function StepHeader({ Icon, title, desc }: { Icon: typeof Snowflake; title: string; desc: string }) {
   return (
-    <div className="mb-4 text-center sm:text-left">
-      <div className="mb-1.5 inline-grid h-9 w-9 place-items-center rounded-xl bg-primary/15 text-primary">
+    <div className="mb-3 text-center sm:text-left">
+      <div className="mb-1 inline-grid h-8 w-8 place-items-center rounded-xl bg-primary/15 text-primary">
         <Icon className="h-4 w-4" />
       </div>
-      <h2 className="font-display text-xl text-white sm:text-2xl">{title}</h2>
-      <p className="mt-1 text-xs text-white/60 sm:text-sm">{desc}</p>
+      <h2 className="font-display text-lg text-white sm:text-xl">{title}</h2>
+      <p className="mt-0.5 text-xs text-white/60">{desc}</p>
     </div>
   );
 }
@@ -343,7 +339,7 @@ function StepNav({ step, isLast, canAdvance, submitting, onBack, onNext, onSubmi
   onBack: () => void; onNext: () => void; onSubmit: () => void;
 }) {
   return (
-    <div className={`mt-6 flex items-center gap-3 ${step === 0 ? "justify-end" : "justify-between"}`}>
+    <div className={`mt-5 flex items-center gap-3 ${step === 0 ? "justify-end" : "justify-between"}`}>
       {step > 0 && (
         <button type="button" onClick={onBack}
           className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5">
@@ -372,20 +368,20 @@ function Step1({ state, set }: { state: FormState; set: <K extends keyof FormSta
   return (
     <>
       <StepHeader Icon={Wrench} title="What service do you need?" desc="Select the type of HVAC service required." />
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
         {SERVICES.map(({ value, label, Icon }) => {
           const active = state.service === value;
           return (
             <button key={value} type="button" onClick={() => set("service", value)}
-              className={`group relative flex flex-col items-center gap-2 rounded-2xl border p-3.5 text-center transition-all ${
+              className={`group relative flex flex-col items-center gap-1.5 rounded-xl border p-2.5 text-center transition-all ${
                 active ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--brand),0_20px_40px_-20px_rgba(16,181,223,0.6)]" : "border-white/10 bg-white/[0.02] hover:border-white/25 hover:bg-white/[0.05]"
               }`}
             >
-              <Icon className={`h-6 w-6 transition-colors ${active ? "text-primary" : "text-white/70 group-hover:text-primary"}`} />
-              <span className={`text-xs font-semibold ${active ? "text-primary" : "text-white/70"}`}>{label}</span>
+              <Icon className={`h-5 w-5 transition-colors ${active ? "text-primary" : "text-white/70 group-hover:text-primary"}`} />
+              <span className={`text-[11px] font-semibold leading-tight ${active ? "text-primary" : "text-white/70"}`}>{label}</span>
               {active && (
-                <span className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-primary text-secondary">
-                  <Check className="h-3 w-3" strokeWidth={3} />
+                <span className="absolute right-1.5 top-1.5 grid h-4 w-4 place-items-center rounded-full bg-primary text-secondary">
+                  <Check className="h-2.5 w-2.5" strokeWidth={3} />
                 </span>
               )}
             </button>
@@ -393,22 +389,22 @@ function Step1({ state, set }: { state: FormState; set: <K extends keyof FormSta
         })}
       </div>
 
-      <div className="mt-6">
-        <h3 className="mb-3 flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider text-white/70">
+      <div className="mt-4">
+        <h3 className="mb-2.5 flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider text-white/70">
           <Rocket className="h-4 w-4 text-primary" /> Urgency Level
         </h3>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-2.5 sm:grid-cols-3">
           {URGENCIES.map(({ value, name, sub, Icon, accent }) => {
             const active = state.urgency === value;
             const color = accent === "orange" ? "255,107,53" : accent === "red" ? "239,68,68" : "16,181,223";
             return (
               <button key={value} type="button" onClick={() => set("urgency", value)}
-                className={`flex items-start gap-3 rounded-2xl border p-4 text-left transition-all ${
+                className={`flex items-start gap-2.5 rounded-xl border p-3 text-left transition-all ${
                   active ? "bg-white/[0.06]" : "border-white/10 bg-white/[0.02] hover:border-white/25"
                 }`}
                 style={active ? { borderColor: `rgb(${color})`, boxShadow: `0 0 0 1px rgb(${color}), 0 15px 30px -15px rgba(${color},0.5)` } : undefined}
               >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg" style={{ background: `rgba(${color},0.15)`, color: `rgb(${color})` }}>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg" style={{ background: `rgba(${color},0.15)`, color: `rgb(${color})` }}>
                   <Icon className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
