@@ -456,17 +456,17 @@ function Step2({ state, set }: { state: FormState; set: <K extends keyof FormSta
       <textarea
         value={state.description}
         onChange={(e) => set("description", e.target.value)}
-        rows={5}
+        rows={4}
         placeholder="What's happening? When did it start? Any unusual sounds or smells?"
-        className="w-full rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white placeholder:text-white/30 transition-all focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20"
+        className="w-full rounded-2xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-white placeholder:text-white/30 transition-all focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20"
       />
 
       {/* Budget Estimator */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+      <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
         <button type="button" onClick={() => setExpanded((v) => !v)}
-          className="flex w-full items-center gap-4 p-5 text-left">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
-            <DollarSign className="h-5 w-5" />
+          className="flex w-full items-center gap-3 p-4 text-left">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/15 text-primary">
+            <DollarSign className="h-4 w-4" />
           </span>
           <div className="flex-1 min-w-0">
             <div className="font-heading text-sm font-bold text-white">Budget Estimator</div>
@@ -477,14 +477,14 @@ function Step2({ state, set }: { state: FormState; set: <K extends keyof FormSta
           </span>
         </button>
         {expanded && (
-          <div className="border-t border-white/5 p-5">
-            <div className="grid gap-4 sm:grid-cols-3">
+          <div className="border-t border-white/5 p-4">
+            <div className="grid gap-3 sm:grid-cols-3">
               <Select label="Property Size" value={propertySize} onChange={setSize} options={[["small","Small (< 100m²)"],["medium","Medium (100–250m²)"],["large","Large (> 250m²)"]]} />
               <Select label="Equipment Age" value={equipmentAge} onChange={setAge} options={[["new","New (< 3 yrs)"],["mid","Mid (3–10 yrs)"],["old","Old (> 10 yrs)"]]} />
               <Select label="Complexity" value={complexity} onChange={setComplexity} options={[["low","Low"],["med","Medium"],["high","High"]]} />
             </div>
-            <div className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
-              <div className="font-display text-3xl text-primary">{range}</div>
+            <div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
+              <div className="font-display text-2xl text-primary">{range}</div>
               <div className="mt-1 text-xs text-white/60">Estimated price range. Final quote given after on-site inspection.</div>
               <button type="button" className="mt-3 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-primary hover:underline">
                 Schedule a visit for a definitive quote <ArrowRight className="h-3.5 w-3.5" />
@@ -495,10 +495,10 @@ function Step2({ state, set }: { state: FormState; set: <K extends keyof FormSta
       </div>
 
       {/* Photo Upload */}
-      <div className="mt-6">
+      <div className="mt-4">
         <label htmlFor="photoInput"
-          className="flex cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02] p-8 text-center transition-all hover:border-primary hover:bg-primary/5">
-          <Camera className="h-8 w-8 text-primary" />
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02] p-5 text-center transition-all hover:border-primary hover:bg-primary/5">
+          <Camera className="h-6 w-6 text-primary" />
           <div>
             <div className="text-sm font-bold text-white">Upload photos of the equipment or issue</div>
             <div className="mt-0.5 text-xs text-white/50">PNG, JPG, HEIC — up to 6 photos</div>
@@ -508,10 +508,10 @@ function Step2({ state, set }: { state: FormState; set: <K extends keyof FormSta
         </label>
 
         {state.photos.length > 0 && (
-          <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
+          <div className="mt-3 grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6">
             {state.photos.map((p) => (
               <div key={p.id} className="group relative overflow-hidden rounded-xl border border-white/10 bg-black">
-                <img src={p.url} alt={p.name} className="h-24 w-full object-cover" />
+                <img src={p.url} alt={p.name} className="h-20 w-full object-cover" />
                 <button type="button" onClick={() => removePhoto(p.id)}
                   className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-black/70 text-white opacity-0 transition-opacity group-hover:opacity-100" aria-label="Remove">
                   <X className="h-3.5 w-3.5" />
@@ -542,17 +542,17 @@ function Step3({ state, set }: { state: FormState; set: <K extends keyof FormSta
   return (
     <>
       <StepHeader Icon={MapPin} title="Service Location" desc="Where should we send the technician?" />
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         <Input label="Street Address" value={state.address} onChange={(v) => set("address", v)} required />
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           <Input label="Suburb / City" value={state.city} onChange={(v) => set("city", v)} required />
           <Input label="Postcode" value={state.zip} onChange={(v) => set("zip", v)} required />
         </div>
         <label className="block">
           <span className="mb-1.5 block font-heading text-[11px] font-bold uppercase tracking-wider text-white/60">Access Notes (Optional)</span>
-          <textarea value={state.accessNotes} onChange={(e) => set("accessNotes", e.target.value)} rows={3}
+          <textarea value={state.accessNotes} onChange={(e) => set("accessNotes", e.target.value)} rows={2}
             placeholder="Gate code, parking, pets, entry instructions…"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20" />
+            className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20" />
         </label>
       </div>
     </>
@@ -574,7 +574,7 @@ function Input({ label, value, onChange, required, type = "text", prefix: Prefix
           </span>
         )}
         <input type={type} value={value} onChange={(e) => onChange(e.target.value)}
-          className={`w-full rounded-lg border border-white/10 bg-white/[0.04] py-3 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20 ${Prefix ? "pl-10 pr-4" : "px-4"}`} />
+          className={`w-full rounded-lg border border-white/10 bg-white/[0.04] py-2.5 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20 ${Prefix ? "pl-10 pr-4" : "px-4"}`} />
       </div>
     </label>
   );
@@ -585,16 +585,16 @@ function Step4({ state, set }: { state: FormState; set: <K extends keyof FormSta
     <>
       <StepHeader Icon={CalendarDays} title="Pick a Date & Time Slot" desc="Choose your preferred appointment window." />
       <MiniCalendar value={state.date} onChange={(d) => set("date", d)} />
-      <div className="mt-8">
-        <h3 className="mb-4 flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider text-white/70">
+      <div className="mt-5">
+        <h3 className="mb-3 flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider text-white/70">
           <Clock className="h-4 w-4 text-primary" /> Preferred Time Window
         </h3>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           {TIME_SLOTS.map((s) => {
             const active = state.slot === s;
             return (
               <button key={s} type="button" onClick={() => set("slot", s)}
-                className={`rounded-xl border py-3 text-sm font-semibold transition-all ${
+                className={`rounded-xl border py-2.5 text-sm font-semibold transition-all ${
                   active ? "border-primary bg-primary/15 text-primary shadow-[0_0_0_1px_var(--brand)]" : "border-white/10 bg-white/[0.02] text-white/70 hover:border-white/25"
                 }`}>
                 {s}
@@ -623,13 +623,13 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
   const change = (delta: number) => setView((v) => new Date(v.getFullYear(), v.getMonth() + delta, 1));
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-      <div className="mb-4 flex items-center justify-between">
-        <button type="button" onClick={() => change(-1)} className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-white/70 hover:bg-white/5" aria-label="Prev month">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <button type="button" onClick={() => change(-1)} className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-white/70 hover:bg-white/5" aria-label="Prev month">
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <div className="font-heading text-base font-bold text-white">{monthName}</div>
-        <button type="button" onClick={() => change(1)} className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-white/70 hover:bg-white/5" aria-label="Next month">
+        <div className="font-heading text-sm font-bold text-white">{monthName}</div>
+        <button type="button" onClick={() => change(1)} className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-white/70 hover:bg-white/5" aria-label="Next month">
           <ChevronRight className="h-4 w-4" />
         </button>
       </div>
@@ -668,8 +668,8 @@ function Step5({ state, set }: { state: FormState; set: <K extends keyof FormSta
   return (
     <>
       <StepHeader Icon={User} title="Your Contact Info" desc="We'll use this to confirm your appointment." />
-      <div className="grid gap-4">
-        <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           <Input label="First Name" value={state.firstName} onChange={(v) => set("firstName", v)} required />
           <Input label="Last Name"  value={state.lastName}  onChange={(v) => set("lastName", v)}  required />
         </div>
@@ -678,12 +678,12 @@ function Step5({ state, set }: { state: FormState; set: <K extends keyof FormSta
 
         <div>
           <span className="mb-1.5 block font-heading text-[11px] font-bold uppercase tracking-wider text-white/60">Preferred Contact Method</span>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2.5">
             {methods.map(({ value, label, Icon }) => {
               const active = state.contactMethod === value;
               return (
                 <button key={value} type="button" onClick={() => set("contactMethod", value)}
-                  className={`inline-flex items-center justify-center gap-2 rounded-lg border py-3 text-sm font-semibold transition-all ${
+                  className={`inline-flex items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-semibold transition-all ${
                     active ? "border-primary bg-primary/15 text-primary" : "border-white/10 bg-white/[0.02] text-white/70 hover:border-white/25"
                   }`}>
                   <Icon className="h-4 w-4" /> {label}
@@ -707,7 +707,7 @@ function Step6({ state }: { state: FormState }) {
   return (
     <>
       <StepHeader Icon={CheckCircle2} title="Review Your Booking" desc="Check the details and confirm your appointment." />
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         <SummarySection label="Service">
           <SummaryRow Icon={service?.Icon ?? Wrench} value={service?.label ?? "—"} />
           <div className="mt-2">
@@ -751,8 +751,8 @@ function Step6({ state }: { state: FormState }) {
 
 function SummarySection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-      <div className="mb-3 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-primary">{label}</div>
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="mb-2.5 font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-primary">{label}</div>
       {children}
     </div>
   );
@@ -772,17 +772,17 @@ function Success({ state, onReset }: { state: FormState; onReset: () => void }) 
   const service = SERVICES.find((s) => s.value === state.service);
   const dateStr = state.date?.toLocaleDateString("en-AU", { weekday: "long", month: "long", day: "numeric" }) ?? "—";
   return (
-    <div className="rounded-3xl border border-primary/20 bg-white/[0.04] p-10 text-center shadow-[0_30px_80px_-40px_rgba(16,181,223,0.5)] backdrop-blur-xl">
-      <div className="relative mx-auto grid h-24 w-24 place-items-center">
+    <div className="rounded-3xl border border-primary/20 bg-white/[0.04] p-6 text-center shadow-[0_30px_80px_-40px_rgba(16,181,223,0.5)] backdrop-blur-xl sm:p-8">
+      <div className="relative mx-auto grid h-16 w-16 place-items-center">
         <div className="absolute inset-0 animate-ping rounded-full bg-primary/30" />
-        <div className="relative grid h-24 w-24 place-items-center rounded-full bg-primary text-secondary shadow-brand">
-          <Check className="h-12 w-12" strokeWidth={3} />
+        <div className="relative grid h-16 w-16 place-items-center rounded-full bg-primary text-secondary shadow-brand">
+          <Check className="h-8 w-8" strokeWidth={3} />
         </div>
       </div>
-      <h2 className="mt-8 font-display text-4xl text-white">Booking Confirmed!</h2>
-      <p className="mt-2 text-white/60">We've received your appointment request. You'll get a confirmation shortly.</p>
+      <h2 className="mt-5 font-display text-2xl text-white sm:text-3xl">Booking Confirmed!</h2>
+      <p className="mt-2 text-sm text-white/60">We've received your appointment request. You'll get a confirmation shortly.</p>
 
-      <div className="mx-auto mt-8 max-w-md space-y-2 text-left">
+      <div className="mx-auto mt-5 max-w-md space-y-2 text-left">
         <SuccessRow Icon={Wrench} label="Service"     value={service?.label ?? "—"} />
         <SuccessRow Icon={Calendar}          label="Date"        value={dateStr} />
         <SuccessRow Icon={Clock}             label="Window"      value={state.slot || "—"} />
@@ -790,7 +790,7 @@ function Success({ state, onReset }: { state: FormState; onReset: () => void }) 
       </div>
 
       <button type="button" onClick={onReset}
-        className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/5">
+        className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/5">
         <CalendarPlus className="h-4 w-4" /> Book Another Appointment
       </button>
       <div className="mt-4">
@@ -818,12 +818,12 @@ function TrustSection() {
     { Icon: Lock,   title: "Secure & Private",   sub: "Your data is never shared" },
   ];
   return (
-    <section className="border-t border-white/5 bg-black/20 py-14">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-5 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+    <section className="border-t border-white/5 bg-black/20 py-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-5 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         {items.map(({ Icon, title, sub }) => (
-          <div key={title} className="flex items-center gap-4">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
-              <Icon className="h-5 w-5" />
+          <div key={title} className="flex items-center gap-3">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
+              <Icon className="h-4 w-4" />
             </span>
             <div className="min-w-0">
               <div className="font-heading text-sm font-bold text-white">{title}</div>
