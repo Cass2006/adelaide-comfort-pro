@@ -83,7 +83,7 @@ function BookPage() {
       <BgCanvas />
       <SiteHeader />
       <Hero />
-      <main className="relative mx-auto max-w-4xl px-4 pb-24 sm:px-6">
+      <main className="relative mx-auto max-w-3xl px-4 pb-16 sm:px-6">
         <Wizard />
       </main>
       <TrustSection />
@@ -130,27 +130,27 @@ function SiteHeader() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-5xl px-5 py-16 text-center sm:py-24">
-        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-          <Rocket className="h-3.5 w-3.5" /> Book in under 2 minutes
+      <div className="mx-auto max-w-4xl px-5 py-10 text-center sm:py-14">
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+          <Rocket className="h-3 w-3" /> Book in under 2 minutes
         </div>
-        <h1 className="mt-6 font-display text-5xl leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-[76px]">
+        <h1 className="mt-4 font-display text-3xl leading-[1.05] tracking-tight text-white sm:text-4xl lg:text-5xl">
           Schedule Your{" "}
           <span className="bg-gradient-to-r from-primary via-cyan-300 to-primary bg-clip-text text-transparent">HVAC Service</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-white/70">
+        <p className="mx-auto mt-3 max-w-xl text-sm text-white/70 sm:text-base">
           Expert technicians, on-time arrivals, transparent pricing. Book your appointment today.
         </p>
-        <div className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        <div className="mx-auto mt-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
           <Stat value={<>5.0 <Star className="inline h-4 w-4 fill-current text-primary" /></>} label="Rated" />
           <Divider />
           <Stat value="500+" label="Jobs Done" />
           <Divider />
           <Stat value="15 min" label="Avg Response" />
         </div>
-        <div className="mt-10 inline-flex flex-col items-center gap-1 text-xs uppercase tracking-widest text-white/50">
+        <div className="mt-6 inline-flex flex-col items-center gap-1 text-[10px] uppercase tracking-widest text-white/50">
           Begin Booking
-          <ChevronDown className="h-4 w-4 animate-bounce" />
+          <ChevronDown className="h-3.5 w-3.5 animate-bounce" />
         </div>
       </div>
     </section>
@@ -159,12 +159,12 @@ function Hero() {
 function Stat({ value, label }: { value: React.ReactNode; label: string }) {
   return (
     <div className="text-center">
-      <div className="font-display text-2xl text-white">{value}</div>
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-white/50">{label}</div>
+      <div className="font-display text-xl text-white">{value}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-white/50">{label}</div>
     </div>
   );
 }
-function Divider() { return <span className="hidden h-8 w-px bg-white/10 sm:block" />; }
+function Divider() { return <span className="hidden h-6 w-px bg-white/10 sm:block" />; }
 
 /* ── WIZARD ── */
 
@@ -201,9 +201,9 @@ function Wizard() {
   if (confirmed) return <Success state={state} onReset={reset} />;
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-xl">
       <ProgressBar step={step} />
-      <div className="p-6 sm:p-10">
+      <div className="p-5 sm:p-7">
         {step === 0 && <Step1 state={state} set={set} />}
         {step === 1 && <Step2 state={state} set={set} />}
         {step === 2 && <Step3 state={state} set={set} />}
@@ -228,7 +228,7 @@ function Wizard() {
 function ProgressBar({ step }: { step: number }) {
   const pct = ((step + 1) / STEPS.length) * 100;
   return (
-    <div className="border-b border-white/5 bg-black/20 px-6 py-5 sm:px-10">
+    <div className="border-b border-white/5 bg-black/20 px-5 py-4 sm:px-7">
       <div className="mb-3 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
         <span>Step {step + 1} of {STEPS.length}</span>
         <span className="text-primary">{STEPS[step]}</span>
@@ -247,12 +247,12 @@ function ProgressBar({ step }: { step: number }) {
 
 function StepHeader({ Icon, title, desc }: { Icon: typeof Snowflake; title: string; desc: string }) {
   return (
-    <div className="mb-8 text-center sm:text-left">
-      <div className="mb-3 inline-grid h-12 w-12 place-items-center rounded-2xl bg-primary/15 text-primary">
-        <Icon className="h-6 w-6" />
+    <div className="mb-6 text-center sm:text-left">
+      <div className="mb-2 inline-grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
+        <Icon className="h-5 w-5" />
       </div>
-      <h2 className="font-display text-3xl text-white sm:text-4xl">{title}</h2>
-      <p className="mt-1 text-sm text-white/60">{desc}</p>
+      <h2 className="font-display text-2xl text-white sm:text-3xl">{title}</h2>
+      <p className="mt-1 text-xs text-white/60 sm:text-sm">{desc}</p>
     </div>
   );
 }
