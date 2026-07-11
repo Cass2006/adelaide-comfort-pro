@@ -79,8 +79,8 @@ function row(label: string, value: string) {
     </tr>`;
 }
 
-function buildEmailHtml(opts: { heading: string; intro: string; booking: BookingPayload; customerName: string }) {
-  const { heading, intro, booking, customerName } = opts;
+function buildEmailHtml(opts: { heading: string; intro: string; booking: BookingPayload; customerName: string; signoff?: boolean }) {
+  const { heading, intro, booking, customerName, signoff } = opts;
 
   const rows = [
     row("Service", escapeHtml(SERVICE_LABELS[booking.service ?? ""] ?? booking.service ?? "—")),
@@ -150,6 +150,14 @@ function buildEmailHtml(opts: { heading: string; intro: string; booking: Booking
           ${rows.join("")}
           ${photosHtml}
         </table>
+        ${
+          signoff
+            ? `<p style="margin:22px 0 0;color:#475569;font-size:14px;line-height:1.6;">
+                 Talk soon,<br />
+                 <strong style="color:#0f172a;">The Adelaide HVAC Services team</strong> 🔧
+               </p>`
+            : ""
+        }
       </div>
       <div class="email-footer" style="padding:16px 28px;background:#f8fafc;color:#94a3b8;font-size:12px;text-align:center;">
         Adelaide HVAC Services &middot; Licensed &amp; Insured &middot; Available 24/7
@@ -191,15 +199,23 @@ Deno.serve(async (req: Request) => {
   try {
     const booking = (await req.json()) as BookingPayload;
     const customerName = [booking.firstName, booking.lastName].filter(Boolean).join(" ") || "Customer";
+    const firstName = booking.firstName || customerName.split(" ")[0] || "there";
     const serviceLabel = SERVICE_LABELS[booking.service ?? ""] ?? booking.service ?? "HVAC service";
+
+    const customerIntro =
+      booking.urgency === "emergency"
+        ? "Thanks for reaching out — we know this can't wait. One of our technicians will call you shortly to get someone out to you as fast as we can."
+        : booking.urgency === "today"
+          ? "Thanks for booking with us! We'll do our best to get a technician out to you today — we'll call shortly to lock in the details."
+          : "Thanks for booking with us! Here's a quick recap of your appointment — we'll give you a call to confirm everything before we head out.";
 
     const results = await Promise.all([
       sendEmail(
         BUSINESS_NOTIFICATION_EMAIL,
-        `New booking: ${serviceLabel} — ${customerName}`,
+        `New booking from ${customerName} — ${serviceLabel}`,
         buildEmailHtml({
-          heading: "New booking received",
-          intro: "A customer just submitted a booking through the website.",
+          heading: "Heads up — a new booking just came in! 👋",
+          intro: `${customerName} just booked ${serviceLabel.toLowerCase()} online. Here's everything you need before heading out.`,
           booking,
           customerName,
         }),
@@ -207,12 +223,13 @@ Deno.serve(async (req: Request) => {
       booking.email
         ? sendEmail(
             booking.email,
-            "Your Adelaide HVAC Services booking is confirmed",
+            `You're booked in, ${firstName}!`,
             buildEmailHtml({
-              heading: `Thanks, ${customerName.split(" ")[0]}!`,
-              intro: "We've received your appointment request. Our team will call you shortly to confirm.",
+              heading: `You're all set, ${firstName}!`,
+              intro: customerIntro,
               booking,
               customerName,
+              signoff: true,
             }),
           )
         : Promise.resolve({ ok: true, status: 0, body: { skipped: true } }),
