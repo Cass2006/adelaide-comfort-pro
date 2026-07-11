@@ -242,7 +242,25 @@ function Wizard() {
       });
       if (insertError) throw insertError;
 
-      supabase.functions.invoke("send-booking-confirmation", { body: state }).catch(() => {});
+      supabase.functions.invoke("send-booking-confirmation", {
+        body: {
+          service: state.service,
+          urgency: state.urgency,
+          description: state.description,
+          accessNotes: state.accessNotes,
+          photoUrls,
+          address: state.address,
+          city: state.city,
+          zip: state.zip,
+          date: state.date ? toISODateOnly(state.date) : "",
+          slot: state.slot,
+          firstName: state.firstName,
+          lastName: state.lastName,
+          phone: state.phone,
+          email: state.email,
+          contactMethod: state.contactMethod,
+        },
+      }).catch(() => {});
 
       setConfirmed(true);
     } catch (err) {
