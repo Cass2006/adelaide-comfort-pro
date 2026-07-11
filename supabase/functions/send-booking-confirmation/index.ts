@@ -72,8 +72,10 @@ function escapeHtml(value: string) {
 function row(label: string, value: string) {
   return `
     <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #eef2f5;color:#64748b;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;vertical-align:top;">${label}</td>
-      <td style="padding:10px 0 10px 16px;border-bottom:1px solid #eef2f5;color:#0f172a;font-size:15px;">${value}</td>
+      <td style="padding:12px 0;border-bottom:1px solid #eef2f5;">
+        <div style="color:#64748b;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">${label}</div>
+        <div style="color:#0f172a;font-size:16px;line-height:1.4;word-break:break-word;">${value}</div>
+      </td>
     </tr>`;
 }
 
@@ -103,13 +105,13 @@ function buildEmailHtml(opts: { heading: string; intro: string; booking: Booking
     booking.photoUrls && booking.photoUrls.length > 0
       ? `
     <tr>
-      <td colspan="2" style="padding:16px 0 0;">
-        <div style="color:#64748b;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;">Photos (${booking.photoUrls.length})</div>
+      <td style="padding:16px 0 0;">
+        <div style="color:#64748b;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;">Photos (${booking.photoUrls.length})</div>
         <div>
           ${booking.photoUrls
             .map(
               (url) =>
-                `<a href="${url}" style="display:inline-block;margin:0 8px 8px 0;"><img src="${url}" width="90" height="90" style="border-radius:8px;object-fit:cover;border:1px solid #e2e8f0;" /></a>`,
+                `<a href="${url}" style="display:inline-block;margin:0 8px 8px 0;"><img src="${url}" width="84" height="84" class="photo-thumb" style="border-radius:8px;object-fit:cover;border:1px solid #e2e8f0;" /></a>`,
             )
             .join("")}
         </div>
@@ -117,25 +119,45 @@ function buildEmailHtml(opts: { heading: string; intro: string; booking: Booking
     </tr>`
       : "";
 
-  return `
-  <div style="background:#f1f5f9;padding:32px 16px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-    <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
-      <div style="background:${BRAND};padding:24px 28px;">
-        <div style="color:#ffffff;font-weight:800;font-size:18px;letter-spacing:.02em;">ADELAIDE HVAC SERVICES</div>
+  return `<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+  body { margin:0; }
+  @media only screen and (max-width: 480px) {
+    .email-wrap { padding: 16px 8px !important; }
+    .email-card { border-radius: 12px !important; }
+    .email-header { padding: 18px 18px !important; }
+    .email-body { padding: 20px 18px !important; }
+    .email-footer { padding: 14px 18px !important; }
+    .email-heading { font-size: 18px !important; }
+    .photo-thumb { width: 72px !important; height: 72px !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="email-wrap" style="background:#f1f5f9;padding:32px 16px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+    <div class="email-card" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+      <div class="email-header" style="background:${BRAND};padding:24px 28px;">
+        <div style="color:#ffffff;font-weight:800;font-size:17px;letter-spacing:.02em;">ADELAIDE HVAC SERVICES</div>
       </div>
-      <div style="padding:28px;">
-        <h1 style="margin:0 0 8px;font-size:20px;color:#0f172a;">${escapeHtml(heading)}</h1>
+      <div class="email-body" style="padding:28px;">
+        <h1 class="email-heading" style="margin:0 0 8px;font-size:20px;line-height:1.3;color:#0f172a;">${escapeHtml(heading)}</h1>
         <p style="margin:0 0 20px;color:#475569;font-size:14px;line-height:1.5;">${escapeHtml(intro)}</p>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
           ${rows.join("")}
           ${photosHtml}
         </table>
       </div>
-      <div style="padding:16px 28px;background:#f8fafc;color:#94a3b8;font-size:12px;text-align:center;">
+      <div class="email-footer" style="padding:16px 28px;background:#f8fafc;color:#94a3b8;font-size:12px;text-align:center;">
         Adelaide HVAC Services &middot; Licensed &amp; Insured &middot; Available 24/7
       </div>
     </div>
-  </div>`;
+  </div>
+</body>
+</html>`;
 }
 
 async function sendEmail(to: string, subject: string, html: string) {
