@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { uploadBookingPhoto } from "@/lib/booking-photos.functions";
 import {
   Snowflake, Flame, Wind, RotateCw, Wrench, Hammer, Home, ClipboardList,
   Calendar, Rocket, TriangleAlert, ArrowRight, ArrowLeft, PenSquare,
@@ -83,18 +85,32 @@ function toISODateOnly(d: Date) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-async function uploadBookingPhotos(photos: Photo[]): Promise<string[]> {
+async function blobToBase64(blob: Blob): Promise<string> {
+  const buf = new Uint8Array(await blob.arrayBuffer());
+  let binary = "";
+  const chunk = 0x8000;
+  for (let i = 0; i < buf.length; i += chunk) {
+    binary += String.fromCharCode(...buf.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+async function uploadBookingPhotos(
+  photos: Photo[],
+  upload: (payload: { data: { name: string; contentType: string; dataBase64: string } }) => Promise<{ signedUrl: string }>,
+): Promise<string[]> {
   const urls: string[] = [];
   for (const photo of photos) {
     const blob = await fetch(photo.url).then((r) => r.blob());
-    const path = `${crypto.randomUUID()}-${photo.name}`;
-    const { error: uploadError } = await supabase.storage.from("booking-photos").upload(path, blob);
-    if (uploadError) throw uploadError;
-    const { data: signed, error: signError } = await supabase.storage
-      .from("booking-photos")
-      .createSignedUrl(path, 60 * 60 * 24 * 365);
-    if (signError) throw signError;
-    urls.push(signed.signedUrl);
+    const dataBase64 = await blobToBase64(blob);
+    const res = await upload({
+      data: {
+        name: photo.name,
+        contentType: blob.type || "image/jpeg",
+        dataBase64,
+      },
+    });
+    urls.push(res.signedUrl);
   }
   return urls;
 }
