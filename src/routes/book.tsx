@@ -212,6 +212,7 @@ function Wizard() {
   const [submitting, setSubmitting] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const uploadPhoto = useServerFn(uploadBookingPhoto);
 
   const set = <K extends keyof FormState>(key: K, val: FormState[K]) => setState((s) => ({ ...s, [key]: val }));
 
@@ -233,7 +234,7 @@ function Wizard() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const photoUrls = await uploadBookingPhotos(state.photos);
+      const photoUrls = await uploadBookingPhotos(state.photos, uploadPhoto);
 
       const { error: insertError } = await supabase.from("bookings").insert({
         service: state.service,
