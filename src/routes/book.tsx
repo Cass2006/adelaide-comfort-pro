@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Snowflake, Flame, Wind, RotateCw, Wrench, Hammer, Home, ClipboardList,
   Calendar, Rocket, TriangleAlert, ArrowRight, ArrowLeft, PenSquare,
@@ -74,6 +75,29 @@ const initialState: FormState = {
   date: null, slot: "",
   firstName: "", lastName: "", phone: "", email: "", contactMethod: "phone",
 };
+
+function toISODateOnly(d: Date) {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+async function uploadBookingPhotos(photos: Photo[]): Promise<string[]> {
+  const urls: string[] = [];
+  for (const photo of photos) {
+    const blob = await fetch(photo.url).then((r) => r.blob());
+    const path = `${crypto.randomUUID()}-${photo.name}`;
+    const { error: uploadError } = await supabase.storage.from("booking-photos").upload(path, blob);
+    if (uploadError) throw uploadError;
+    const { data: signed, error: signError } = await supabase.storage
+      .from("booking-photos")
+      .createSignedUrl(path, 60 * 60 * 24 * 365);
+    if (signError) throw signError;
+    urls.push(signed.signedUrl);
+  }
+  return urls;
+}
 
 /* ── ROOT ── */
 
@@ -175,6 +199,7 @@ function Wizard() {
   const [state, setState] = useState<FormState>(initialState);
   const [submitting, setSubmitting] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const set = <K extends keyof FormState>(key: K, val: FormState[K]) => setState((s) => ({ ...s, [key]: val }));
 
@@ -192,11 +217,42 @@ function Wizard() {
   const next = () => canAdvance && setStep((s) => Math.min(STEPS.length - 1, s + 1));
   const back = () => setStep((s) => Math.max(0, s - 1));
 
-  const submit = () => {
+  const submit = async () => {
     setSubmitting(true);
-    setTimeout(() => { setSubmitting(false); setConfirmed(true); }, 1400);
+    setSubmitError(null);
+    try {
+      const photoUrls = await uploadBookingPhotos(state.photos);
+
+      const { error: insertError } = await supabase.from("bookings").insert({
+        service: state.service,
+        urgency: state.urgency,
+        description: state.description || null,
+        photo_urls: photoUrls,
+        address: state.address,
+        city: state.city,
+        zip: state.zip,
+        access_notes: state.accessNotes || null,
+        preferred_date: state.date ? toISODateOnly(state.date) : "",
+        time_slot: state.slot,
+        first_name: state.firstName,
+        last_name: state.lastName,
+        phone: state.phone,
+        email: state.email,
+        contact_method: state.contactMethod,
+      });
+      if (insertError) throw insertError;
+
+      supabase.functions.invoke("send-booking-confirmation", { body: state }).catch(() => {});
+
+      setConfirmed(true);
+    } catch (err) {
+      console.error(err);
+      setSubmitError("We couldn't save your booking. Please check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
-  const reset = () => { setState(initialState); setStep(0); setConfirmed(false); };
+  const reset = () => { setState(initialState); setStep(0); setConfirmed(false); setSubmitError(null); };
 
   if (confirmed) return <Success state={state} onReset={reset} />;
 
@@ -210,6 +266,13 @@ function Wizard() {
         {step === 3 && <Step4 state={state} set={set} />}
         {step === 4 && <Step5 state={state} set={set} />}
         {step === 5 && <Step6 state={state} />}
+
+        {submitError && (
+          <div className="mt-6 flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+            <TriangleAlert className="h-4 w-4 shrink-0" />
+            {submitError}
+          </div>
+        )}
 
         <StepNav
           step={step}
